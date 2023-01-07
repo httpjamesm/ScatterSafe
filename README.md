@@ -34,4 +34,4 @@ ScatterSafe creates 3 QR codes from the split encrypted secret. These QR codes c
 
 If you ever need to access your secret, you can use any 2 of the 3 QR codes to reconstruct the encrypted secret. You can then decrypt the secret with your password.
 
-This is both a **secure** and **reliable** way of backing up important information because an attacker would have to know where to find at least 2 of your 3 QR codes and the password used to encrypt the original secret.
+This is both a **secure** and **reliable** way of backing up important information because an attacker would have to know where to find at least 2 of your 3 QR codes and the password used to encrypt the original secret. If you for some reason cannot access all 3, maybe due to a natural disaster, you can still access your secret by using the 2 QR codes you have.
