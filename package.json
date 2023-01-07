@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@tauri-apps/api": "^1.2.0",
+    "carbon-icons-svelte": "^11.4.0",
     "html5-qrcode": "^2.3.4",
     "libsodium-wrappers": "^0.7.10",
     "qrcode": "^1.5.1",

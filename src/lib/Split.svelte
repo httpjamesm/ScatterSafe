@@ -7,7 +7,18 @@
     // @ts-ignore
     import QRCode from "qrcode";
 
-    import { PasswordInput, TextArea, Button } from "carbon-components-svelte";
+    import {
+        PasswordInput,
+        TextArea,
+        Button,
+        Form,
+        FormGroup,
+    } from "carbon-components-svelte";
+
+    import Password from "carbon-icons-svelte/lib/Password.svelte";
+    import DeploymentUnitTechnicalExecution from "carbon-icons-svelte/lib/DeploymentUnitTechnicalExecution.svelte";
+
+    import { getDicewareWords, getHexPassword } from "./password";
 
     let secret = "";
     let password = "";
@@ -62,33 +73,63 @@
             qrCodes = [...qrCodes, qrCode];
         }
     };
+
+    const generateStrongPassword = async () => {
+        password = await getDicewareWords(7);
+    };
+
+    const generateRandomPassword = async () => {
+        password = await getHexPassword(6);
+    }
 </script>
 
-<form on:submit|preventDefault>
-    <TextArea
-        labelText="Secret"
-        placeholder="Crypto seed, TOTP secret, password, etc."
-        bind:value={secret}
-    />
-    <div style="margin-top: .5rem;">
+<Form>
+    <FormGroup>
+        <TextArea
+            labelText="Secret"
+            placeholder="Crypto seed, TOTP secret, password, etc."
+            bind:value={secret}
+        />
+    </FormGroup>
+    <FormGroup>
         <PasswordInput
             labelText="Encryption Password"
             placeholder="Enter password..."
             bind:value={password}
         />
-    </div>
-
-    <Button on:click={encryptSecret}>Encrypt & Split</Button>
+        <Button
+            kind="tertiary"
+            icon={Password}
+            iconDescription="Generate a strong memorable password"
+            on:click={generateStrongPassword}
+        />
+        <Button
+            kind="tertiary"
+            icon={DeploymentUnitTechnicalExecution}
+            iconDescription="Generate a strong random password"
+            on:click={generateRandomPassword}
+        />
+    </FormGroup>
+    <FormGroup>
+        <Button on:click={encryptSecret} style="margin-top: 1rem;"
+            >Encrypt & Split</Button
+        >
+    </FormGroup>
     <div class="codes">
         {#each qrCodes as qrCode}
             <img class="code" src={qrCode} alt="QR code" />
         {/each}
     </div>
-</form>
+</Form>
 
 <style lang="scss">
     .codes {
         display: flex;
-        gap: .5rem;
+        gap: 0.5rem;
+
+        .code {
+            height: 7rem;
+            width: 7rem;
+        }
     }
 </style>
