@@ -1,0 +1,32 @@
+{
+  "name": "papervault2",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "vite preview",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
+    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
+    "tauri": "tauri"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^1.2.0",
+    "html5-qrcode": "^2.3.4",
+    "libsodium-wrappers": "^0.7.10",
+    "qrcode": "^1.5.1",
+    "sass": "^1.57.1"
+  },
+  "devDependencies": {
+    "@sveltejs/adapter-static": "next",
+    "@sveltejs/kit": "next",
+    "@tauri-apps/cli": "^1.2.2",
+    "carbon-components-svelte": "^0.71.0",
+    "svelte": "^3.54.0",
+    "svelte-check": "^3.0.0",
+    "tslib": "^2.4.1",
+    "typescript": "^4.8.4",
+    "vite": "^4.0.0"
+  }
+}
