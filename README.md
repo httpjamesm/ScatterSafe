@@ -26,7 +26,7 @@ Pen and paper is a simple solution, but it's not secure. If someone finds your n
 
 ### USB Drives
 
-USB drives by default are not encrypted. Regardless of if it's encrypted, you could lose the drive, and your important data with it.
+USB drives by default are not encrypted. Regardless of if the drive encrypted, you could lose the drive, and your important data with it.
 
 ## The Solution
 
