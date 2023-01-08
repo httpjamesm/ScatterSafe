@@ -74,9 +74,9 @@
             {
                 "fullscreen": false,
                 "height": 800,
-                "resizable": false,
+                "resizable": true,
                 "title": "ScatterSafe",
-                "width": 800
+                "width": 700
             }
         ]
     }
