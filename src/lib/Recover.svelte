@@ -53,7 +53,13 @@
         let splits: string[] = [];
 
         for (const file of files) {
-            const data = await html5Qrcode.scanFile(file, true);
+            let data: any;
+            try {
+                data = await html5Qrcode.scanFile(file, true);
+            } catch {
+                errorMessage = "Unable to scan QR code. Please try again with a clearer image.";
+                return;
+            }
 
             if (data) {
                 splits = [...splits, data];
@@ -126,6 +132,57 @@
         fileUploader.clearFiles();
     };
 
+    const getPhoto = async () => {
+        // take selfie
+        const stream = await navigator.mediaDevices.getUserMedia({
+            video: true,
+        });
+
+        let hiddenCanvas = document.createElement("canvas");
+        let video = document.createElement("video");
+        video.srcObject = stream;
+
+        video.onloadedmetadata = async function (e) {
+            video.play();
+
+            // Get the exact size of the video element.
+            let width = video.videoWidth;
+            let height = video.videoHeight;
+
+            // Context object for working with the canvas.
+            const context = hiddenCanvas.getContext("2d");
+            if (!context) return;
+
+            // Set the canvas to the same dimensions as the video.
+            hiddenCanvas.width = width;
+            hiddenCanvas.height = height;
+
+            // Draw a copy of the current frame from the video on the canvas.
+            context.drawImage(video, 0, 0, width, height);
+
+            // Get an image dataURL from the canvas.
+            const imageDataURL = hiddenCanvas.toDataURL("image/png");
+
+            const blob = await fetch(imageDataURL).then((r) => r.blob());
+
+            const file = new File(
+                [blob],
+                `selfie-${Math.floor(Date.now() / 1000)}`,
+                {
+                    type: "image/png",
+                }
+            );
+
+            files = [...files, file];
+
+            // stop camera
+            stream.getTracks().forEach((track) => track.stop());
+
+            // remove video
+            video.remove();
+        };
+    };
+
     onMount(init);
 </script>
 
@@ -162,12 +219,16 @@
             status="complete"
             bind:this={fileUploader}
         />
+        <Button on:click={getPhoto} kind="tertiary">Take photo</Button>
     </FormGroup>
     <FormGroup>
         <Button on:click={doScan}>Recover</Button>
-        <Button kind="secondary" on:click={() => {
-            fileUploader.clearFiles();
-        }}>Clear Files</Button>
+        <Button
+            kind="secondary"
+            on:click={() => {
+                fileUploader.clearFiles();
+            }}>Clear Files</Button
+        >
     </FormGroup>
     {#if decodedSecret}
         <FormGroup>
