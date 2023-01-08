@@ -15,10 +15,15 @@
         Accordion,
         AccordionItem,
         InlineNotification,
+        Tabs,
+        Tab,
+        TabContent,
+        TextInput,
     } from "carbon-components-svelte";
 
-    let Html5Qrcode: any;
     import { onMount } from "svelte";
+
+    let Html5Qrcode: any;
 
     const init = async () => {
         if (browser) {
@@ -37,7 +42,14 @@
     let successMessage: string | undefined = undefined;
     let errorMessage: string | null = null;
 
+    let share1Manual = "";
+    let share2Manual = "";
+
     const doScan = async () => {
+        if (share1Manual && share2Manual) {
+            return await recoverSecret(share1Manual, share2Manual);
+        }
+
         let html5Qrcode = new Html5Qrcode("file-uploader");
 
         if (!files) {
@@ -57,7 +69,8 @@
             try {
                 data = await html5Qrcode.scanFile(file, true);
             } catch {
-                errorMessage = "Unable to scan QR code. Please try again with a clearer image.";
+                errorMessage =
+                    "Unable to scan QR code. Please try again with a clearer image.";
                 return;
             }
 
@@ -66,9 +79,18 @@
             }
         }
 
+        await recoverSecret(splits[0], splits[1]);
+
+        errorMessage = null;
+        successMessage = "Successfully recovered secret.";
+
+        fileUploader.clearFiles();
+    };
+
+    const recoverSecret = async (share1: string, share2: string) => {
         const recovered: string = await invoke("do_recover", {
-            share1b64: splits[0],
-            share2b64: splits[1],
+            share1b64: share1,
+            share2b64: share2,
         });
 
         if (recovered.length == 0) {
@@ -125,11 +147,6 @@
         }
 
         decodedSecret = new TextDecoder().decode(decrypted);
-
-        errorMessage = null;
-        successMessage = "Successfully recovered secret.";
-
-        fileUploader.clearFiles();
     };
 
     const getPhoto = async () => {
@@ -209,17 +226,35 @@
         />
     </FormGroup>
     <FormGroup>
-        <FileUploader
-            accept={[".jpg", ".png"]}
-            multiple
-            labelTitle="Upload QR Codes"
-            labelDescription="Only .jpg and .png files are accepted."
-            buttonLabel="Add files"
-            bind:files
-            status="complete"
-            bind:this={fileUploader}
-        />
-        <Button on:click={getPhoto} kind="tertiary">Take photo</Button>
+        <Tabs>
+            <Tab label="Scan" />
+            <Tab label="Manual" />
+            <svelte:fragment slot="content">
+                <TabContent>
+                    <FileUploader
+                        accept={[".jpg", ".png"]}
+                        multiple
+                        labelTitle="Upload QR Codes"
+                        labelDescription="Only .jpg and .png files are accepted."
+                        buttonLabel="Add files"
+                        bind:files
+                        status="complete"
+                        bind:this={fileUploader}
+                    />
+                    <Button on:click={getPhoto} kind="tertiary"
+                        >Take photo</Button
+                    >
+                </TabContent>
+                <TabContent>
+                    <TextInput
+                        labelText="Share 1"
+                        bind:value={share1Manual}
+                        style="margin-bottom: 1rem;"
+                    />
+                    <TextInput labelText="Share 2" bind:value={share2Manual} />
+                </TabContent>
+            </svelte:fragment>
+        </Tabs>
     </FormGroup>
     <FormGroup>
         <Button on:click={doScan}>Recover</Button>
