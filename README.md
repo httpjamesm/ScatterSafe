@@ -4,6 +4,14 @@ We all have important secrets we need to secure from prying eyes, but also ensur
 
 This project came into existence because another app, called [Superbacked](https://superbacked.com), is charging at least $149 USD for a similar service, which simply doesn't make sense. As well, this project is free and open-source, so anyone can inspect the code and ensure it's not doing anything malicious.
 
+![ScatterSafe Split Light](https://cdn.horizon.pics/yVfDx4M6TFDXc9P31W6bqx7CeEoFVl.png)
+
+![ScatterSafe Recover Light](https://cdn.horizon.pics/v3I9Jls7pqKhLP46P60sgxsETBxHrt.png)
+
+![ScatterSafe Split Dark](https://cdn.horizon.pics/W6mLKRPZdFeIplLQddkCrzLBiKMea0.png)
+
+![ScatterSafe Recover Dark](https://cdn.horizon.pics/4GlKXV1zFEWZTPjpDscsbSJqOozMnJ.png)
+
 ## The Problem
 
 Many trivial ways of storing this information that may come to mind are flawed.
