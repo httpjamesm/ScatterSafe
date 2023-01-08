@@ -8,7 +8,7 @@
     },
     "package": {
         "productName": "ScatterSafe",
-        "version": "1.0.0"
+        "version": "1.1.0"
     },
     "tauri": {
         "allowlist": {
@@ -29,6 +29,10 @@
             "dialog": {
                 "save": true,
                 "message": true
+            },
+            "shell": {
+                "all": false,
+                "open": true
             }
         },
         "bundle": {
@@ -74,9 +78,9 @@
             {
                 "fullscreen": false,
                 "height": 800,
-                "resizable": false,
+                "resizable": true,
                 "title": "ScatterSafe",
-                "width": 800
+                "width": 700
             }
         ]
     }

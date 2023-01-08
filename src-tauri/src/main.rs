@@ -12,7 +12,6 @@ fn main() {
 }
 
 
-// write tauri commands to split and recover secret
 #[tauri::command]
 fn do_split(secret: &str) -> Vec<String> {
     let secret_data = SecretData::with_secret(&secret, 2);
@@ -44,11 +43,15 @@ fn do_recover(share1b64: &str, share2b64: &str) -> String {
     let share2 = base64::decode(share2b64);
 
     // unwrap shares
-    let share1 = share1.unwrap();
-    let share2 = share2.unwrap();
+    let share1 = share1.unwrap_or(vec![]);
+    let share2 = share2.unwrap_or(vec![]);
 
+    if share1.len() == 0 || share2.len() == 0 {
+        return String::from("");
+    }
+    
     let recovered = SecretData::recover_secret(2, vec![share1, share2]);
 
-    recovered.unwrap()
-
+    // unwrap but fallback to empty string if error
+    recovered.unwrap_or(String::from(""))
 }
