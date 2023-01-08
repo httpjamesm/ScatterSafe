@@ -29,6 +29,10 @@
             "dialog": {
                 "save": true,
                 "message": true
+            },
+            "shell": {
+                "all": false,
+                "open": true
             }
         },
         "bundle": {
