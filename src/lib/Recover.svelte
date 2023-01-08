@@ -38,7 +38,9 @@
     let errorMessage: string | null = null;
 
     const doScan = async () => {
-        let html5Qrcode = new Html5Qrcode("file-uploader");
+        let html5Qrcode = new Html5Qrcode("file-uploader", {
+            useBarCodeDetectorIfSupported: false,
+        });
 
         if (!files) {
             errorMessage = "No QR files selected";
@@ -55,9 +57,11 @@
         for (const file of files) {
             let data: any;
             try {
-                data = await html5Qrcode.scanFile(file, true);
-            } catch {
-                errorMessage = "Unable to scan QR code. Please try again with a clearer image.";
+                data = await html5Qrcode.scanFile(file, false);
+            } catch (e) {
+                console.log(e);
+                errorMessage =
+                    "Unable to scan QR code. Please try again with a clearer image.";
                 return;
             }
 

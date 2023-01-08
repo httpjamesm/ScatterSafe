@@ -109,7 +109,9 @@
         });
 
         for (const split of splits) {
-            const qrCode = await QRCode.toDataURL(split);
+            const qrCode = await QRCode.toDataURL(split, {
+                errorCorrectionLevel: "L",
+            });
             qrCodes = [...qrCodes, qrCode];
         }
 
