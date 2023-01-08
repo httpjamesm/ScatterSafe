@@ -291,4 +291,14 @@
             recover your secret.
         </p>
     </AccordionItem>
+    <AccordionItem title="My QR codes aren't being recognized.">
+        <p>
+            Make sure your scene is well-lit and your camera quality is
+            sufficient to recognize details within the QR code. If needed, you
+            can scan the codes with another device and manually enter their
+            values in the Manual entry tab. Since the backups are encrypted, you
+            don't need to trust the device you're using to scan the individual
+            codes.
+        </p>
+    </AccordionItem>
 </Accordion>
