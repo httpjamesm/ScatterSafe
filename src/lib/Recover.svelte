@@ -12,6 +12,9 @@
         TextArea,
         Form,
         FormGroup,
+        Accordion,
+        AccordionItem,
+
     } from "carbon-components-svelte";
 
     let Html5Qrcode: any;
@@ -121,3 +124,12 @@
         </FormGroup>
     {/if}
 </Form>
+
+<Accordion>
+    <AccordionItem title="What do I need to recover my secret?">
+        <p>Thanks to the splitting algorithm, you only need 2 out of the 3 generated QR codes and your original encryption password to recover the secret.</p>
+    </AccordionItem>
+    <AccordionItem title="I don't remember the encryption password.">
+        <p>Unfortunately, without the original encryption password, you cannot recover your secret.</p>
+    </AccordionItem>
+</Accordion>

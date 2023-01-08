@@ -14,6 +14,8 @@
         Form,
         FormGroup,
         SkeletonPlaceholder,
+        Accordion,
+        AccordionItem,
     } from "carbon-components-svelte";
 
     import Password from "carbon-icons-svelte/lib/Password.svelte";
@@ -139,6 +141,44 @@
         {/each}
     </div>
 </Form>
+
+<Accordion>
+    <AccordionItem title="How does this work?">
+        <p>
+            ScatterSafe allows you to securely store reliable backups in
+            multiple locations by using encryption and a splitting
+            algorithm. The secret you enter into ScatterSafe will be encrypted
+            with your password and split into 3 different QR codes which you can
+            print and store in different places. If you ever need to recover your secret,
+            you only need 2 of the 3 QR codes and the encryption password.
+        </p>
+    </AccordionItem>
+    <AccordionItem title="What's the safest way to use ScatterSafe?">
+        <p>
+            Ideally, you should load this app on an airgapped device or a device
+            that will no longer connect to the Internet. This ensures that even
+            if you have an adversary who has loaded malware onto your device,
+            they cannot send or receive your secret or password.
+        </p>
+    </AccordionItem>
+    <AccordionItem title="Are my backups secure against adversaries?">
+        <p>
+            Yes, they should be. Backups are end-to-end encrypted with XSalsa20
+            and their keys are derived from your password using Argon2id. Thanks
+            to secretbox architecture, these encrypted backups are also
+            authenticated, meaning if an attacker were to try to tamper with the
+            encrypted data, they would fail without the original password.
+        </p>
+    </AccordionItem>
+    <AccordionItem title="Where should I store my backups?">
+        <p>
+            Store these backups in multiple places in spots that are hidden from
+            plain sight but you can remember later on should you need to recover
+            the secret. Ensure your backups are not stored in areas that are
+            prone to flooding, fire, or other natural disasters.
+        </p>
+    </AccordionItem>
+</Accordion>
 
 <style lang="scss">
     .codes {
