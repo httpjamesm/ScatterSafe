@@ -14,7 +14,7 @@
         FormGroup,
         Accordion,
         AccordionItem,
-
+        InlineNotification,
     } from "carbon-components-svelte";
 
     let Html5Qrcode: any;
@@ -32,14 +32,18 @@
 
     let decodedSecret = "";
 
-    const doScan = async (e: any) => {
+    let errorMessage: string | null = null;
+
+    const doScan = async () => {
         let html5Qrcode = new Html5Qrcode("file-uploader");
 
         if (!files) {
+            errorMessage = "No QR files selected";
             return;
         }
 
         if (files.length < 2) {
+            errorMessage = "Please upload at least 2 QR files";
             return;
         }
 
@@ -58,7 +62,19 @@
             share2b64: splits[1],
         });
 
+        if (recovered.length == 0) {
+            errorMessage =
+                "Unable to recover encrypted payload. Ensure you have the correct shares.";
+            return;
+        }
+
         const splitRecovered = recovered.split(":");
+
+        if (splitRecovered.length !== 3) {
+            errorMessage =
+                "Unable to detect encryption metadata. Potentially corrupted or invalid QR codes.";
+            return;
+        }
 
         const cipher = splitRecovered[0];
         const nonce = splitRecovered[1];
@@ -73,25 +89,48 @@
             ),
             _sodium.crypto_pwhash_OPSLIMIT_INTERACTIVE,
             _sodium.crypto_pwhash_MEMLIMIT_INTERACTIVE,
-            _sodium.crypto_pwhash_ALG_ARGON2ID13,
+            _sodium.crypto_pwhash_ALG_ARGON2ID13
         );
 
-        const decrypted = _sodium.crypto_secretbox_open_easy(
-            _sodium.from_base64(cipher),
-            _sodium.from_base64(
-                nonce,
-                _sodium.base64_variants.URLSAFE_NO_PADDING
-            ),
-            key
-        );
+        let decrypted: Uint8Array | null = null;
+
+        try {
+            decrypted = _sodium.crypto_secretbox_open_easy(
+                _sodium.from_base64(cipher),
+                _sodium.from_base64(
+                    nonce,
+                    _sodium.base64_variants.URLSAFE_NO_PADDING
+                ),
+                key
+            );
+        } catch {
+            errorMessage =
+                "Unable to decrypt secret. Did you enter the correct password?";
+            return;
+        }
+
+        if (!decrypted) {
+            errorMessage =
+                "Unable to decrypt secret. Did you enter the correct password?";
+            return;
+        }
 
         decodedSecret = new TextDecoder().decode(decrypted);
+
+        errorMessage = null;
     };
 
     onMount(init);
 </script>
 
 <Form>
+    {#if errorMessage}
+        <InlineNotification
+            kind="error"
+            title={"Error"}
+            subtitle={errorMessage}
+        />
+    {/if}
     <FormGroup>
         <PasswordInput
             labelText="Encryption Password"
@@ -127,9 +166,16 @@
 
 <Accordion>
     <AccordionItem title="What do I need to recover my secret?">
-        <p>Thanks to the splitting algorithm, you only need 2 out of the 3 generated QR codes and your original encryption password to recover the secret.</p>
+        <p>
+            Thanks to the splitting algorithm, you only need 2 out of the 3
+            generated QR codes and your original encryption password to recover
+            the secret.
+        </p>
     </AccordionItem>
     <AccordionItem title="I don't remember the encryption password.">
-        <p>Unfortunately, without the original encryption password, you cannot recover your secret.</p>
+        <p>
+            Unfortunately, without the original encryption password, you cannot
+            recover your secret.
+        </p>
     </AccordionItem>
 </Accordion>
