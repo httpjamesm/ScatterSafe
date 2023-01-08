@@ -18,6 +18,7 @@
         AccordionItem,
         InlineNotification,
         TextInput,
+        MultiSelect,
     } from "carbon-components-svelte";
 
     import Password from "carbon-icons-svelte/lib/Password.svelte";
@@ -37,11 +38,14 @@
     let label = "";
 
     let qrCodes: string[] = [];
+    let splits: string[] = [];
 
     let loading = false;
 
     let successMessage: string | undefined = undefined;
     let errorMessage: string | null = null;
+
+    let selectedExportTypes: string[] = [];
 
     const encryptSecret = async () => {
         if (!secret) {
@@ -104,7 +108,7 @@
             return;
         }
 
-        const splits: string[] = await invoke("do_split", {
+        splits = await invoke("do_split", {
             secret: everything,
         });
 
@@ -128,25 +132,47 @@
         password = await getHexPassword(8);
     };
 
-    const generatePDF = async () => {
+    const doExport = async () => {
+        if (!selectedExportTypes.length) {
+            errorMessage = "You must select at least one export type.";
+            return;
+        }
+
+        loading = true;
+
         let zip = new JSZip();
 
         for (let i = 0; i < qrCodes.length; i++) {
-            const doc = new jsPDF();
+            if (selectedExportTypes.includes("0")) {
+                const doc = new jsPDF();
 
-            doc.addImage(qrCodes[i], "PNG", 10, 10, 50, 50);
-            doc.text(label, 35, 65, { align: "center" });
+                doc.addImage(qrCodes[i], "PNG", 10, 10, 50, 50);
+                doc.text(label, 35, 65, { align: "center" });
 
-            const pdf = doc.output("arraybuffer");
+                const pdf = doc.output("arraybuffer");
 
-            zip.file(`${label}-${i + 1}.pdf`, pdf);
+                zip.file(`${label}-${i + 1}.pdf`, pdf);
+            }
+
+            if (selectedExportTypes.includes("1")) {
+                const data = qrCodes[i].replace(/^data:image\/\w+;base64,/, "");
+                const buf = Uint8Array.from(atob(data), (c) => c.charCodeAt(0));
+
+                zip.file(`${label}-${i + 1}.png`, buf);
+            }
+
+            if (selectedExportTypes.includes("2")) {
+                zip.file(`${label}-${i + 1}.txt`, splits[i]);
+            }
         }
 
         const zipFile = await zip.generateAsync({ type: "arraybuffer" });
 
         const unixTimestampNow = Math.floor(Date.now() / 1000);
 
-        const suggestedName = `${label || "scattersafe"}-backup-${unixTimestampNow}.zip`;
+        const suggestedName = `${
+            label || "scattersafe"
+        }-backup-${unixTimestampNow}.zip`;
 
         const filePath = await save({
             filters: [
@@ -166,6 +192,8 @@
 
             await message("Backups compressed and saved successfully.");
         }
+
+        loading = false;
     };
 </script>
 
@@ -229,7 +257,7 @@
         >
     </FormGroup>
     <div class="codes">
-        {#if loading}
+        {#if loading && qrCodes.length === 0}
             {#each Array(3) as _, i}
                 <SkeletonPlaceholder style="width: 7rem; height: 7rem;" />
             {/each}
@@ -239,12 +267,22 @@
         {/each}
     </div>
     {#if qrCodes.length > 0}
-        <Button
-            kind="secondary"
-            on:click={generatePDF}
-            style="margin-bottom: 1rem; margin-top: 1rem;"
-            >Download as PDF</Button
-        >
+        <FormGroup>
+            <MultiSelect
+                titleText="Export as..."
+                label="Select formats..."
+                items={[
+                    { id: "0", text: "PDF" },
+                    { id: "1", text: "JPEG" },
+                    { id: "2", text: "Text" },
+                ]}
+                bind:selectedIds={selectedExportTypes}
+                disabled={loading}
+            />
+        </FormGroup>
+        <FormGroup>
+            <Button on:click={doExport} disabled={loading}>Export</Button>
+        </FormGroup>
     {/if}
 </Form>
 
