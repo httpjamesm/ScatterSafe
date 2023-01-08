@@ -146,7 +146,7 @@
 
         const unixTimestampNow = Math.floor(Date.now() / 1000);
 
-        const suggestedName = `${label}-backup-${unixTimestampNow}.zip`;
+        const suggestedName = `${label || "scattersafe"}-backup-${unixTimestampNow}.zip`;
 
         const filePath = await save({
             filters: [
