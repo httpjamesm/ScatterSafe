@@ -79,7 +79,7 @@
     };
 
     const generateRandomPassword = async () => {
-        password = await getHexPassword(6);
+        password = await getHexPassword(8);
     }
 </script>
 
