@@ -262,9 +262,10 @@
     <AccordionItem title="What's the safest way to use ScatterSafe?">
         <p>
             Ideally, you should load this app on an airgapped device or a device
-            that will no longer connect to the Internet. This ensures that even
-            if you have an adversary who has loaded malware onto your device,
-            they cannot send or receive your secret or password.
+            that will no longer connect to the Internet. While ScatterSafe does
+            not make any outside connections, this ensures that even if you have
+            an adversary who has loaded malware onto your device, they cannot
+            send or receive your secret or password.
         </p>
     </AccordionItem>
     <AccordionItem title="Are my backups secure against adversaries?">
