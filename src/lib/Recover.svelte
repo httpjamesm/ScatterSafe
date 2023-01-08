@@ -32,6 +32,9 @@
 
     let decodedSecret = "";
 
+    let fileUploader: FileUploader;
+
+    let successMessage: string | undefined = undefined;
     let errorMessage: string | null = null;
 
     const doScan = async () => {
@@ -118,6 +121,9 @@
         decodedSecret = new TextDecoder().decode(decrypted);
 
         errorMessage = null;
+        successMessage = "Successfully recovered secret.";
+
+        fileUploader.clearFiles();
     };
 
     onMount(init);
@@ -130,7 +136,14 @@
             title={"Error"}
             subtitle={errorMessage}
         />
+    {:else if successMessage}
+        <InlineNotification
+            kind="success"
+            title={"Success"}
+            subtitle={successMessage}
+        />
     {/if}
+
     <FormGroup>
         <PasswordInput
             labelText="Encryption Password"
@@ -145,13 +158,16 @@
             labelTitle="Upload QR Codes"
             labelDescription="Only .jpg and .png files are accepted."
             buttonLabel="Add files"
-            id="file-uploader"
             bind:files
             status="complete"
+            bind:this={fileUploader}
         />
     </FormGroup>
     <FormGroup>
         <Button on:click={doScan}>Recover</Button>
+        <Button kind="secondary" on:click={() => {
+            fileUploader.clearFiles();
+        }}>Clear Files</Button>
     </FormGroup>
     {#if decodedSecret}
         <FormGroup>
@@ -162,6 +178,7 @@
             />
         </FormGroup>
     {/if}
+    <canvas id="file-uploader" />
 </Form>
 
 <Accordion>

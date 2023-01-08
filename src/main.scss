@@ -2,3 +2,7 @@ body {
     overflow-x: hidden;
     overflow-y: auto;
 }
+
+canvas {
+    display: none !important;
+}
