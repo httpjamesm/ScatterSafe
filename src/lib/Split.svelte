@@ -42,7 +42,7 @@
             salt,
             _sodium.crypto_pwhash_OPSLIMIT_INTERACTIVE,
             _sodium.crypto_pwhash_MEMLIMIT_INTERACTIVE,
-            _sodium.crypto_pwhash_ALG_DEFAULT
+            _sodium.crypto_pwhash_ALG_ARGON2ID13,
         );
 
         // encrypt 3 times with different nonces
