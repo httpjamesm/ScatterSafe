@@ -13,6 +13,7 @@
         Button,
         Form,
         FormGroup,
+        SkeletonPlaceholder,
     } from "carbon-components-svelte";
 
     import Password from "carbon-icons-svelte/lib/Password.svelte";
@@ -25,7 +26,11 @@
 
     let qrCodes: string[] = [];
 
+    let loading = false;
+
     const encryptSecret = async () => {
+        loading = true;
+
         // derivekey with crypto pw function
         await _sodium.ready;
 
@@ -42,7 +47,7 @@
             salt,
             _sodium.crypto_pwhash_OPSLIMIT_INTERACTIVE,
             _sodium.crypto_pwhash_MEMLIMIT_INTERACTIVE,
-            _sodium.crypto_pwhash_ALG_ARGON2ID13,
+            _sodium.crypto_pwhash_ALG_ARGON2ID13
         );
 
         // encrypt 3 times with different nonces
@@ -72,6 +77,8 @@
             const qrCode = await QRCode.toDataURL(split);
             qrCodes = [...qrCodes, qrCode];
         }
+
+        loading = false;
     };
 
     const generateStrongPassword = async () => {
@@ -80,7 +87,7 @@
 
     const generateRandomPassword = async () => {
         password = await getHexPassword(8);
-    }
+    };
 </script>
 
 <Form>
@@ -89,6 +96,7 @@
             labelText="Secret"
             placeholder="Crypto seed, TOTP secret, password, etc."
             bind:value={secret}
+            disabled={loading}
         />
     </FormGroup>
     <FormGroup>
@@ -96,26 +104,36 @@
             labelText="Encryption Password"
             placeholder="Enter password..."
             bind:value={password}
+            disabled={loading}
         />
         <Button
             kind="tertiary"
             icon={Password}
             iconDescription="Generate a strong memorable password"
             on:click={generateStrongPassword}
+            disabled={loading}
         />
         <Button
             kind="tertiary"
             icon={DeploymentUnitTechnicalExecution}
             iconDescription="Generate a strong random password"
             on:click={generateRandomPassword}
+            disabled={loading}
         />
     </FormGroup>
     <FormGroup>
-        <Button on:click={encryptSecret} style="margin-top: 1rem;"
-            >Encrypt & Split</Button
+        <Button
+            on:click={encryptSecret}
+            style="margin-top: 1rem;"
+            disabled={loading}>Encrypt & Split</Button
         >
     </FormGroup>
     <div class="codes">
+        {#if loading}
+            {#each Array(3) as _, i}
+                <SkeletonPlaceholder style="width: 7rem; height: 7rem;" />
+            {/each}
+        {/if}
         {#each qrCodes as qrCode}
             <img class="code" src={qrCode} alt="QR code" />
         {/each}
