@@ -7,7 +7,7 @@
     "distDir": "../build"
   },
   "package": {
-    "productName": "papervault2",
+    "productName": "ScatterSafe",
     "version": "0.1.0"
   },
   "tauri": {
@@ -58,7 +58,7 @@
         "fullscreen": false,
         "height": 600,
         "resizable": true,
-        "title": "papervault2",
+        "title": "ScatterSafe",
         "width": 800
       }
     ]
