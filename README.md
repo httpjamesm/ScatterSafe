@@ -1,8 +1,8 @@
 # ScatterSafe
 
-We all have important secrets we need to secure from prying eyes, but also ensure we have access to them in the event of an emergency. Stuff like crypto seeds, backup TOTP secrets for essential accounts, and other sensitive information. ScatterSafe is a simple, secure, and easy to use solution for storing this information.
+We all have important secrets we need to secure from prying eyes, yet we must ensure we have access to them in the event of an emergency. Crypto seeds, backup TOTP secrets for essential accounts, among other sensitive information. ScatterSafe is a simple, secure, and easy to use solution for storing this information.
 
-This project came into existence because another app, called [Superbacked](https://superbacked.com), is charging at least $149 USD for a similar service, which simply doesn't make sense. As well, this project is free and open-source, so anyone can inspect the code and ensure it's not doing anything malicious.
+This project came exists because another company, called [Superbacked](https://superbacked.com), is charging a minimum of $149 USD for a similar service, which simply doesn't make sense. Furthermore, unlike Superbacked, this project is free and open-source, so anyone can inspect the code and ensure that it's not malicious.
 
 ![ScatterSafe Split Light](https://cdn.horizon.pics/yVfDx4M6TFDXc9P31W6bqx7CeEoFVl.png)
 
@@ -14,7 +14,7 @@ This project came into existence because another app, called [Superbacked](https
 
 ## The Problem
 
-Many trivial ways of storing this information that may come to mind are flawed.
+Many trivial methods of storing this information that may come to mind are flawed.
 
 ### Password Managers
 
@@ -26,7 +26,7 @@ Pen and paper is a simple solution, but it's not secure. If someone finds your n
 
 ### USB Drives
 
-USB drives by default are not encrypted, and if you lose that drive, you also lose that important data.
+USB drives by default are not encrypted. Regardless of if the drive encrypted, you could lose the drive, and your important data with it.
 
 ## The Solution
 
@@ -34,7 +34,7 @@ ScatterSafe uses the [Shamir secret sharing algorithm](https://en.wikipedia.org/
 
 ### How It Works
 
-ScatterSafe will ask you for a secret and a password.
+ScatterSafe will request a secret and a password.
 
 The secret is encrypted with your password using XSalsa20.
 
@@ -42,4 +42,4 @@ ScatterSafe creates 3 QR codes from the split encrypted secret. These QR codes c
 
 If you ever need to access your secret, you can use any 2 of the 3 QR codes to reconstruct the encrypted secret. You can then decrypt the secret with your password.
 
-This is both a **secure** and **reliable** way of backing up important information because an attacker would have to know where to find at least 2 of your 3 QR codes and the password used to encrypt the original secret. If you for some reason cannot access all 3, maybe due to a natural disaster, you can still access your secret by using the 2 QR codes you have.
+This is both a **secure** and **reliable** way of backing up important information because an attacker would have to know where to find at least 2 of your 3 QR codes, along with the password used to encrypt the original secret. If for some reason you cannot access all 3, perhaps due to a natural disaster, you can still access your secret by using the remaining QR codes.
