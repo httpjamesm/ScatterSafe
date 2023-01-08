@@ -17,6 +17,7 @@
         Accordion,
         AccordionItem,
         InlineNotification,
+        TextInput,
     } from "carbon-components-svelte";
 
     import Password from "carbon-icons-svelte/lib/Password.svelte";
@@ -24,8 +25,16 @@
 
     import { getDicewareWords, getHexPassword } from "./password";
 
+    import { jsPDF } from "jspdf";
+
+    import JSZip from "jszip";
+
+    import { message, save } from "@tauri-apps/api/dialog";
+    import { writeBinaryFile } from "@tauri-apps/api/fs";
+
     let secret = "";
     let password = "";
+    let label = "";
 
     let qrCodes: string[] = [];
 
@@ -35,6 +44,16 @@
     let errorMessage: string | null = null;
 
     const encryptSecret = async () => {
+        if (!secret) {
+            errorMessage = "You must enter a secret.";
+            return;
+        }
+
+        if (!password) {
+            errorMessage = "You must enter a password.";
+            return;
+        }
+
         loading = true;
 
         // derivekey with crypto pw function
@@ -108,6 +127,46 @@
     const generateRandomPassword = async () => {
         password = await getHexPassword(8);
     };
+
+    const generatePDF = async () => {
+        let zip = new JSZip();
+
+        for (let i = 0; i < qrCodes.length; i++) {
+            const doc = new jsPDF();
+
+            doc.addImage(qrCodes[i], "PNG", 10, 10, 50, 50);
+            doc.text(label, 35, 65, { align: "center" });
+
+            const pdf = doc.output("arraybuffer");
+
+            zip.file(`${label}-${i + 1}.pdf`, pdf);
+        }
+
+        const zipFile = await zip.generateAsync({ type: "arraybuffer" });
+
+        const unixTimestampNow = Math.floor(Date.now() / 1000);
+
+        const suggestedName = `${label}-backup-${unixTimestampNow}.zip`;
+
+        const filePath = await save({
+            filters: [
+                {
+                    name: suggestedName,
+                    extensions: ["zip"],
+                },
+            ],
+            defaultPath: suggestedName,
+        });
+
+        if (filePath) {
+            await writeBinaryFile({
+                contents: zipFile,
+                path: filePath,
+            });
+
+            await message("Backups compressed and saved successfully.");
+        }
+    };
 </script>
 
 <Form>
@@ -156,6 +215,13 @@
         />
     </FormGroup>
     <FormGroup>
+        <TextInput
+            labelText="Label"
+            placeholder="Bitcoin Wallet"
+            bind:value={label}
+        />
+    </FormGroup>
+    <FormGroup>
         <Button
             on:click={encryptSecret}
             style="margin-top: 1rem;"
@@ -172,6 +238,14 @@
             <img class="code" src={qrCode} alt="QR code" />
         {/each}
     </div>
+    {#if qrCodes.length > 0}
+        <Button
+            kind="secondary"
+            on:click={generatePDF}
+            style="margin-bottom: 1rem; margin-top: 1rem;"
+            >Download as PDF</Button
+        >
+    {/if}
 </Form>
 
 <Accordion>

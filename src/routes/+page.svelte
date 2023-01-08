@@ -3,8 +3,6 @@
     import Split from "$lib/Split.svelte";
     import { Tabs, Tab, TabContent } from "carbon-components-svelte";
     import { appWindow } from "@tauri-apps/api/window";
-    import { emit, listen } from "@tauri-apps/api/event";
-    import type { UnlistenFn } from "@tauri-apps/api/event";
     import { onMount } from "svelte";
 
     const checkTheme = async () => {
