@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "ScatterSafe",
-    "version": "0.1.0"
+    "version": "1.0.0"
   },
   "tauri": {
     "allowlist": {
@@ -29,7 +29,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "space.httpjames.scatterSafe",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
