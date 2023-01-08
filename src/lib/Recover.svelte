@@ -10,6 +10,8 @@
         PasswordInput,
         Button,
         TextArea,
+        Form,
+        FormGroup,
     } from "carbon-components-svelte";
 
     let Html5Qrcode: any;
@@ -34,7 +36,7 @@
             return;
         }
 
-        if (files.length === 0) {
+        if (files.length < 2) {
             return;
         }
 
@@ -86,27 +88,36 @@
     onMount(init);
 </script>
 
-<div class="container">
-    <PasswordInput
-        labelText="Encryption Password"
-        placeholder="Enter password..."
-        bind:value={password}
-    />
-
-    <FileUploader
-        accept={[".jpg", ".png"]}
-        multiple
-        labelTitle="Upload QR Codes"
-        labelDescription="Only .jpg and .png files are accepted."
-        buttonLabel="Add files"
-        id="file-uploader"
-        bind:files
-        status="complete"
-    />
-
-    <Button on:click={doScan}>Recover</Button>
-
+<Form>
+    <FormGroup>
+        <PasswordInput
+            labelText="Encryption Password"
+            placeholder="Enter password..."
+            bind:value={password}
+        />
+    </FormGroup>
+    <FormGroup>
+        <FileUploader
+            accept={[".jpg", ".png"]}
+            multiple
+            labelTitle="Upload QR Codes"
+            labelDescription="Only .jpg and .png files are accepted."
+            buttonLabel="Add files"
+            id="file-uploader"
+            bind:files
+            status="complete"
+        />
+    </FormGroup>
+    <FormGroup>
+        <Button on:click={doScan}>Recover</Button>
+    </FormGroup>
     {#if decodedSecret}
-        <TextArea value={decodedSecret} labelText="Recovered Secret" disabled />
+        <FormGroup>
+            <TextArea
+                value={decodedSecret}
+                labelText="Recovered Secret"
+                disabled
+            />
+        </FormGroup>
     {/if}
-</div>
+</Form>
