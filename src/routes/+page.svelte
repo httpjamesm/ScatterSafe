@@ -28,17 +28,21 @@
 
 <div class="parent">
     <div class="child">
-        <h1>ScatterSafe</h1>
+        <div class="header">
+            <h1>ScatterSafe</h1>
+        </div>
         <Tabs>
             <Tab label="Split" />
             <Tab label="Recover" />
             <svelte:fragment slot="content">
-                <TabContent>
-                    <Split />
-                </TabContent>
-                <TabContent>
-                    <Recover />
-                </TabContent>
+                <div class="scrollable">
+                    <TabContent>
+                        <Split />
+                    </TabContent>
+                    <TabContent>
+                        <Recover />
+                    </TabContent>
+                </div>
             </svelte:fragment>
         </Tabs>
     </div>
@@ -54,6 +58,18 @@
 
         .child {
             width: 30rem;
+
+            overflow-y: hidden;
+
+            .scrollable {
+                overflow-y: scroll;
+                overflow-x: hidden;
+                height: calc(100vh - 120px);
+
+                &::-webkit-scrollbar {
+                    display: none; /* Safari and Chrome */
+                }
+            }
         }
     }
 </style>
