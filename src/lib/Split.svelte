@@ -16,6 +16,7 @@
         SkeletonPlaceholder,
         Accordion,
         AccordionItem,
+        InlineNotification,
     } from "carbon-components-svelte";
 
     import Password from "carbon-icons-svelte/lib/Password.svelte";
@@ -29,6 +30,9 @@
     let qrCodes: string[] = [];
 
     let loading = false;
+
+    let successMessage: string | undefined = undefined;
+    let errorMessage: string | null = null;
 
     const encryptSecret = async () => {
         loading = true;
@@ -71,6 +75,16 @@
 
         const everything = `${encryptedB64}:${nonceB64}:${saltB64}`;
 
+        const everythingByteLength = new TextEncoder().encode(
+            everything
+        ).length;
+
+        if (everythingByteLength > 375) {
+            errorMessage = "Secret is too long. Try a shorter secret.";
+            loading = false;
+            return;
+        }
+
         const splits: string[] = await invoke("do_split", {
             secret: everything,
         });
@@ -81,6 +95,10 @@
         }
 
         loading = false;
+
+        errorMessage = null;
+        successMessage =
+            "Secret encrypted and split successfully. Save, print and distribute the QR codes.";
     };
 
     const generateStrongPassword = async () => {
@@ -93,6 +111,20 @@
 </script>
 
 <Form>
+    {#if errorMessage}
+        <InlineNotification
+            kind="error"
+            title={"Error"}
+            subtitle={errorMessage}
+        />
+    {:else if successMessage}
+        <InlineNotification
+            kind="success"
+            title={"Success"}
+            subtitle={successMessage}
+        />
+    {/if}
+
     <FormGroup>
         <TextArea
             labelText="Secret"
@@ -146,10 +178,10 @@
     <AccordionItem title="How does this work?">
         <p>
             ScatterSafe allows you to securely store reliable backups in
-            multiple locations by using encryption and a splitting
-            algorithm. The secret you enter into ScatterSafe will be encrypted
-            with your password and split into 3 different QR codes which you can
-            print and store in different places. If you ever need to recover your secret,
+            multiple locations by using encryption and a splitting algorithm.
+            The secret you enter into ScatterSafe will be encrypted with your
+            password and split into 3 different QR codes which you can print and
+            store in different places. If you ever need to recover your secret,
             you only need 2 of the 3 QR codes and the encryption password.
         </p>
     </AccordionItem>
