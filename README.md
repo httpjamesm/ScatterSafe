@@ -2,7 +2,7 @@
 
 We all have important secrets we need to secure from prying eyes, yet we must ensure we have access to them in the event of an emergency. Crypto seeds, backup TOTP secrets for essential accounts, among other sensitive information. ScatterSafe is a simple, secure, and easy to use solution for storing this information.
 
-This project came exists because another company, called [Superbacked](https://superbacked.com), is charging a minimum of $149 USD for a similar service, which simply doesn't make sense. Furthermore, unlike Superbacked, this project is free and open-source, so anyone can inspect the code and ensure that it's not malicious.
+This project exists because another company, called [Superbacked](https://superbacked.com), is charging a minimum of $149 USD for a similar service, which simply doesn't make sense. Furthermore, unlike Superbacked, this project is free and open-source, so anyone can inspect the code and ensure that it's not malicious.
 
 ![ScatterSafe Split Light](https://cdn.horizon.pics/yVfDx4M6TFDXc9P31W6bqx7CeEoFVl.png)
 
