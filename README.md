@@ -4,13 +4,13 @@ We all have sensitive secrets we need to secure from prying eyes. Yet, we must e
 
 This project exists because another company, named [Superbacked](https://superbacked.com), charges a minimum of **$149** for a similar service, which doesn't make sense. Furthermore, unlike Superbacked, this project is free and open-source, so anyone can inspect the code and ensure it's not malicious.
 
-![ScatterSafe Split Light](https://cdn.horizon.pics/yVfDx4M6TFDXc9P31W6bqx7CeEoFVl.png)
+![ScatterSafe Split Light](https://files.horizon.pics/aa2f658b-6a7e-4a46-8846-821b40716a85?a=1&mime1=image&mime2=png)
 
-![ScatterSafe Recover Light](https://cdn.horizon.pics/v3I9Jls7pqKhLP46P60sgxsETBxHrt.png)
+![ScatterSafe Recover Light](https://files.horizon.pics/b4dee93a-50d8-477f-81c2-f5b1d1088c12?a=1&mime1=image&mime2=png)
 
-![ScatterSafe Split Dark](https://cdn.horizon.pics/W6mLKRPZdFeIplLQddkCrzLBiKMea0.png)
+![ScatterSafe Split Dark](https://files.horizon.pics/0efb38eb-a0da-4b53-99bd-b7c040cfc6c7?a=1&mime1=image&mime2=png)
 
-![ScatterSafe Recover Dark](https://cdn.horizon.pics/4GlKXV1zFEWZTPjpDscsbSJqOozMnJ.png)
+![ScatterSafe Recover Dark](https://files.horizon.pics/e0ec9ab7-3879-4ffb-8cc6-71fa5ec5d42d?a=1&mime1=image&mime2=png)
 
 ## The Problem
 
