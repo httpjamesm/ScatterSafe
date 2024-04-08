@@ -2,7 +2,7 @@
   import { invoke } from "@tauri-apps/api/tauri";
 
   // @ts-ignore
-  import _sodium from "libsodium-wrappers";
+  import _sodium from "libsodium-wrappers-sumo";
 
   // @ts-ignore
   import QRCode from "qrcode";

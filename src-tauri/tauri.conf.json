@@ -1,86 +1,86 @@
 {
-    "$schema": "../node_modules/@tauri-apps/cli/schema.json",
-    "build": {
-        "beforeBuildCommand": "npm run build",
-        "beforeDevCommand": "npm run dev",
-        "devPath": "http://localhost:1420",
-        "distDir": "../build"
+  "$schema": "../node_modules/@tauri-apps/cli/schema.json",
+  "build": {
+    "beforeBuildCommand": "npm run build",
+    "beforeDevCommand": "npm run dev",
+    "devPath": "http://localhost:1420",
+    "distDir": "../build"
+  },
+  "package": {
+    "productName": "ScatterSafe",
+    "version": "1.2.0"
+  },
+  "tauri": {
+    "allowlist": {
+      "all": false,
+      "fs": {
+        "all": false,
+        "copyFile": false,
+        "createDir": false,
+        "exists": false,
+        "readDir": false,
+        "readFile": false,
+        "removeDir": false,
+        "removeFile": false,
+        "renameFile": false,
+        "scope": [],
+        "writeFile": true
+      },
+      "dialog": {
+        "save": true,
+        "message": true
+      },
+      "shell": {
+        "all": false,
+        "open": true
+      }
     },
-    "package": {
-        "productName": "ScatterSafe",
-        "version": "1.1.1"
+    "bundle": {
+      "active": true,
+      "category": "DeveloperTool",
+      "copyright": "",
+      "deb": {
+        "depends": []
+      },
+      "externalBin": [],
+      "icon": [
+        "icons/32x32.png",
+        "icons/128x128.png",
+        "icons/icon.icns",
+        "icons/icon.ico"
+      ],
+      "identifier": "space.httpjames.scatterSafe",
+      "longDescription": "",
+      "macOS": {
+        "entitlements": null,
+        "exceptionDomain": "",
+        "frameworks": [],
+        "providerShortName": null,
+        "signingIdentity": null
+      },
+      "resources": [],
+      "shortDescription": "",
+      "targets": "all",
+      "windows": {
+        "certificateThumbprint": null,
+        "digestAlgorithm": "sha256",
+        "timestampUrl": ""
+      }
     },
-    "tauri": {
-        "allowlist": {
-            "all": false,
-            "fs": {
-                "all": false,
-                "copyFile": false,
-                "createDir": false,
-                "exists": false,
-                "readDir": false,
-                "readFile": false,
-                "removeDir": false,
-                "removeFile": false,
-                "renameFile": false,
-                "scope": [],
-                "writeFile": true
-            },
-            "dialog": {
-                "save": true,
-                "message": true
-            },
-            "shell": {
-                "all": false,
-                "open": true
-            }
-        },
-        "bundle": {
-            "active": true,
-            "category": "DeveloperTool",
-            "copyright": "",
-            "deb": {
-                "depends": []
-            },
-            "externalBin": [],
-            "icon": [
-                "icons/32x32.png",
-                "icons/128x128.png",
-                "icons/icon.icns",
-                "icons/icon.ico"
-            ],
-            "identifier": "space.httpjames.scatterSafe",
-            "longDescription": "",
-            "macOS": {
-                "entitlements": null,
-                "exceptionDomain": "",
-                "frameworks": [],
-                "providerShortName": null,
-                "signingIdentity": null
-            },
-            "resources": [],
-            "shortDescription": "",
-            "targets": "all",
-            "windows": {
-                "certificateThumbprint": null,
-                "digestAlgorithm": "sha256",
-                "timestampUrl": ""
-            }
-        },
-        "security": {
-            "csp": null
-        },
-        "updater": {
-            "active": false
-        },
-        "windows": [
-            {
-                "fullscreen": false,
-                "height": 800,
-                "resizable": true,
-                "title": "ScatterSafe",
-                "width": 700
-            }
-        ]
-    }
+    "security": {
+      "csp": null
+    },
+    "updater": {
+      "active": false
+    },
+    "windows": [
+      {
+        "fullscreen": false,
+        "height": 800,
+        "resizable": true,
+        "title": "ScatterSafe",
+        "width": 700
+      }
+    ]
+  }
 }
