@@ -323,6 +323,12 @@
       who has loaded malware onto your device, they cannot send or receive your
       secret or password.
     </p>
+    <br />
+    <p>
+      Alternatively, you can load Tails OS on a USB stick and boot from that to
+      use ScatterSafe. Tails does not persist data by default, rendering it much
+      less prone to malware attacks.
+    </p>
   </AccordionItem>
   <AccordionItem title="Are my backups secure against adversaries?">
     <p>
