@@ -33,6 +33,9 @@
       "shell": {
         "all": false,
         "open": true
+      },
+      "app": {
+        "all": true
       }
     },
     "bundle": {

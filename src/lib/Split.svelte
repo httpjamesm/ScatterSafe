@@ -32,6 +32,7 @@
 
   import { message, save } from "@tauri-apps/api/dialog";
   import { writeBinaryFile } from "@tauri-apps/api/fs";
+  import { getVersion } from "@tauri-apps/api/app";
 
   import zxcvbn from "zxcvbn";
 
@@ -166,11 +167,16 @@
       }
     }
 
+    const dates = getDates();
+
+    zip.file(
+      "readme.txt",
+      `This backup, labeled ${label || "unnamed backup"}, was created at ${dates.human} (unix ms: ${dates.unix}) using ScatterSafe version ${await getVersion()} (https://github.com/httpjamesm/ScatterSafe), a secure encrypted backup program that leverages shamir secret sharing for redundancy. You need 2 of the 3 QR codes *AND* the encryption password to recover the secret.`
+    );
+
     const zipFile = await zip.generateAsync({ type: "arraybuffer" });
 
-    const suggestedName = `${
-      label || "scattersafe"
-    }-backup-${getReadableDate()}.zip`;
+    const suggestedName = `${label || "scattersafe"}-backup-${dates.human}.zip`;
 
     const filePath = await save({
       filters: [
@@ -194,7 +200,7 @@
     loading = false;
   };
 
-  const getReadableDate = () => {
+  const getDates = () => {
     const now = new Date();
     const year = now.getFullYear();
     const month = (now.getMonth() + 1).toString().padStart(2, "0");
@@ -203,7 +209,10 @@
     const minutes = now.getMinutes().toString().padStart(2, "0");
     const seconds = now.getSeconds().toString().padStart(2, "0");
 
-    return `${year}-${month}-${day}_${hours}-${minutes}-${seconds}`;
+    return {
+      human: `${year}-${month}-${day}_${hours}-${minutes}-${seconds}`,
+      unix: now.getTime(),
+    };
   };
 
   const defaultCrackTime = "less than a second";
