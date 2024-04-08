@@ -245,20 +245,22 @@
       It would take <strong>{crackTime}</strong> to crack this password.
     </p>
     <br />
-    <Button
-      kind="tertiary"
-      icon={Password}
-      iconDescription="Generate a strong memorable password"
-      on:click={generateStrongPassword}
-      disabled={loading}
-    />
-    <Button
-      kind="tertiary"
-      icon={DeploymentUnitTechnicalExecution}
-      iconDescription="Generate a strong random password"
-      on:click={generateRandomPassword}
-      disabled={loading}
-    />
+    <div style="display: flex; justify-content: center;">
+      <Button
+        kind="tertiary"
+        icon={Password}
+        iconDescription="Generate a strong memorable password"
+        on:click={generateStrongPassword}
+        disabled={loading}
+      />
+      <Button
+        kind="tertiary"
+        icon={DeploymentUnitTechnicalExecution}
+        iconDescription="Generate a strong random password"
+        on:click={generateRandomPassword}
+        disabled={loading}
+      />
+    </div>
   </FormGroup>
   <FormGroup>
     <TextInput
