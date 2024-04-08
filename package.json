@@ -19,7 +19,8 @@
     "jszip": "^3.10.1",
     "libsodium-wrappers": "^0.7.10",
     "qrcode": "^1.5.1",
-    "sass": "^1.57.1"
+    "sass": "^1.57.1",
+    "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
     "@sveltejs/adapter-static": "next",
